@@ -1,10 +1,11 @@
-use std::{env, process, fs};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
+use std::{env, fs, process};
 
 fn main() {
-
     let file_path = "tasks.json";
-    let mut database = Database {tasks: load_database(file_path)};
+    let mut database = Database {
+        tasks: load_database(file_path),
+    };
 
     let config = Config::build(env::args()).unwrap_or_else(|err| {
         eprintln!("Error parsing the commands: {err}");
@@ -68,7 +69,6 @@ struct Database {
 }
 
 impl Database {
-
     pub fn add(&mut self, task: Task) {
         self.tasks.push(task);
     }
@@ -82,7 +82,6 @@ impl Database {
             println!("[{}] {}", i.done, i.description);
         }
     }
-
 }
 
 fn load_database(file_path: &str) -> Vec<Task> {
