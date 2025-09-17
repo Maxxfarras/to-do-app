@@ -3,7 +3,11 @@ use to_do_app::{Config, Database, Task};
 
 fn main() {
     let file_path = "tasks.json";
-    let mut database: Database = Database::load(file_path);
+
+    let mut database: Database = Database::load(file_path).unwrap_or_else(|err| {
+        eprintln!("Error loading the file 'tasks.json': {err}");
+        process::exit(1);
+    });
 
     let config: Config = Config::build(env::args()).unwrap_or_else(|err| {
         eprintln!("Error parsing the commands: {err}");

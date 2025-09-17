@@ -73,10 +73,17 @@ pub mod database {
             }
         }
 
-        pub fn load(file_path: &str) -> Self {
-            let contents = fs::read_to_string(file_path).unwrap_or_else(|_| "[]".to_string());
-            let tasks = serde_json::from_str(&contents).unwrap_or_else(|_| Vec::new());
-            Database { tasks }
+        pub fn load(file_path: &str) -> Result<Self, &'static str> {
+            let contents = match fs::read_to_string(file_path) {
+                Ok(arg) => arg,
+                Err(_) => return Err("Failed to read JSON")
+            };
+            let tasks = match serde_json::from_str(&contents) {
+                Ok(arg) => arg,
+                Err(_) => return Err("Faile parsing JSON")
+            };
+
+            Ok(Self { tasks })
         }
 
         pub fn save(&self, file_path: &str) -> Result<(), std::io::Error> {

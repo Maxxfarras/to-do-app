@@ -18,5 +18,9 @@
   {
     "description": "walk the dog",
     "done": false
+  },
+  {
+    "description": "clean the garage",
+    "done": false
   }
 ]
