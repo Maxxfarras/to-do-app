@@ -1,6 +1,6 @@
 pub use config::Config;
-pub use task::Task;
 pub use database::Database;
+pub use task::Task;
 
 pub mod config {
     #[derive(Debug)]
@@ -26,8 +26,8 @@ pub mod config {
 }
 
 pub mod task {
-    use serde::{Deserialize, Serialize};
     use crate::config::Config;
+    use serde::{Deserialize, Serialize};
 
     #[derive(Debug, Serialize, Deserialize)]
     pub struct Task {
@@ -50,8 +50,8 @@ pub mod task {
 }
 
 pub mod database {
-    use std::fs;
     use crate::task::Task;
+    use std::fs;
 
     #[derive(Debug)]
     pub struct Database {
@@ -83,6 +83,5 @@ pub mod database {
             let json = serde_json::to_string_pretty(&self.tasks).unwrap();
             fs::write(file_path, json)
         }
-
     }
 }

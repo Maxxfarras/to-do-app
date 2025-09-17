@@ -1,5 +1,5 @@
 use std::{env, process};
-use to_do_app::{Config, Task, Database};
+use to_do_app::{Config, Database, Task};
 
 fn main() {
     let file_path = "tasks.json";
