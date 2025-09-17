@@ -46,6 +46,7 @@ pub mod task {
 }
 
 pub mod database {
+    use std::fs;
     use crate::task::Task;
 
     #[derive(Debug)]
@@ -67,15 +68,16 @@ pub mod database {
                 println!("[{}] {}", i.done, i.description);
             }
         }
-    }
 
-    fn load_database(file_path: &str) -> Vec<Task> {
-        let contents = fs::read_to_string(file_path).unwrap_or_else(|_| "[]".to_string());
-        serde_json::from_str(&contents).unwrap_or_else(|_| Vec::new())
-    }
+        pub fn load(file_path: &str) -> Vec<Task> {
+            let contents = fs::read_to_string(file_path).unwrap_or_else(|_| "[]".to_string());
+            serde_json::from_str(&contents).unwrap_or_else(|_| Vec::new())
+        }
 
-    fn save_database(vector: &Vec<Task>, file_path: &str) -> Result<(), std::io::Error> {
-        let json = serde_json::to_string_pretty(vector).unwrap();
-        fs::write(file_path, json)
+        pub fn save_database(vector: &Vec<Task>, file_path: &str) -> Result<(), std::io::Error> {
+            let json = serde_json::to_string_pretty(vector).unwrap();
+            fs::write(file_path, json)
+        }
+
     }
 }
