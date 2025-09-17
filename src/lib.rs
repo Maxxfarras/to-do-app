@@ -1,3 +1,7 @@
+pub use config::Config;
+pub use task::Task;
+pub use database::Database;
+
 pub mod config {
     #[derive(Debug)]
     pub struct Config {
@@ -69,13 +73,14 @@ pub mod database {
             }
         }
 
-        pub fn load(file_path: &str) -> Vec<Task> {
+        pub fn load(file_path: &str) -> Self {
             let contents = fs::read_to_string(file_path).unwrap_or_else(|_| "[]".to_string());
-            serde_json::from_str(&contents).unwrap_or_else(|_| Vec::new())
+            let tasks = serde_json::from_str(&contents).unwrap_or_else(|_| Vec::new());
+            Database { tasks }
         }
 
-        pub fn save_database(vector: &Vec<Task>, file_path: &str) -> Result<(), std::io::Error> {
-            let json = serde_json::to_string_pretty(vector).unwrap();
+        pub fn save(&self, file_path: &str) -> Result<(), std::io::Error> {
+            let json = serde_json::to_string_pretty(&self.tasks).unwrap();
             fs::write(file_path, json)
         }
 
